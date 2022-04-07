@@ -1,0 +1,50 @@
+<?xml version="1.0" standalone="no"?>
+<ROM>
+  <Version_Info>
+    <A2BDLL_Version Version="19.4.2.0" />
+    <A2BStackDLL_Version Version="19.4.2.0" />
+    <SigmaStudio_Version Version="Unknown" />
+  </Version_Info>
+  <page modetype="Mode 0">
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="18" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="CONTROL">84</action>
+    <action instr="delay" CellName="AD242x Master Node0" ParamName="A2B_Delay">19</action>
+    <action instr="read" addr_width="1" data_width="1" len="2" addr="23" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="INTTYPE" />
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="27" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="INTMSK0">10</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="29" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="INTMSK2">09</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="26" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="INTPND2">01</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="15" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="RESPCYCS">7D</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="18" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="CONTROL">81</action>
+    <action instr="delay" CellName="AD242x Master Node0" ParamName="A2B_Delay">01</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="65" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="I2SGCFG">04</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="9" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="SWCTL">01</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="19" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="DISCVRY">7D</action>
+    <action instr="delay" CellName="AD242x Master Node0" ParamName="A2B_Delay">32</action>
+    <action instr="read" addr_width="1" data_width="1" len="2" addr="23" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="INTTYPE" />
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="9" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="SWCTL">21</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="1" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="NODEADR">00</action>
+    <action instr="read" addr_width="1" data_width="1" len="2" addr="2" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="VENDOR" />
+    <action instr="read" addr_width="1" data_width="1" len="2" addr="3" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="PRODUCT" />
+    <action instr="read" addr_width="1" data_width="1" len="2" addr="4" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="VERSION" />
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="1" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="NODEADR">00</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="11" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="LDNSLOTS">80</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="12" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="LUPSLOTS">10</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="65" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="I2SGCFG">02</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="66" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="I2SCFG">F7</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="90" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="CLK2CFG">81</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="101" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="DNMASK0">FF</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="102" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="DNMASK1">FF</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="27" i2caddr="105" AddrIncr="0" CellName="AD242x Slave Node0" ParamName="INTMSK0">10</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="66" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="I2SCFG">7F</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="13" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="DNSLOTS">10</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="14" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="UPSLOTS">10</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="9" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="SWCTL">01</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="1" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="NODEADR">80</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="1" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="NODEADR">00</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="16" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="SLOTFMT">44</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="17" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="DATCTL">03</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="18" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="CONTROL">81</action>
+    <action instr="delay" CellName="AD242x Master Node0" ParamName="A2B_Delay">01</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="1" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="NODEADR">00</action>
+    <action instr="writeXbytes" addr_width="1" data_width="1" len="2" addr="18" i2caddr="104" AddrIncr="0" CellName="AD242x Master Node0" ParamName="CONTROL">82</action>
+  </page>
+</ROM>

@@ -1,0 +1,384 @@
+//=============================================================================
+//
+// Project: a2bdriver
+//
+// Copyright (c) 2015 - Analog Devices Inc. All Rights Reserved.
+// This software is proprietary & confidential to Analog Devices, Inc.
+// and its licensors. See LICENSE for complete details.
+//
+//=============================================================================
+//
+// \file:   bdd.proto
+// \author: Mentor Graphics, Embedded Software Division
+// \brief:  The protobufs description of the BDD as defined by the A2B
+//          driver software stack.
+//
+//=============================================================================
+
+package bdd;
+
+message MetaData
+{
+    // Date format: YYYY/MM/DD
+    // required string date = 1;
+
+    // -----------------------------------------------------------------
+    // |              Year             |     Month     |    Day        |
+    // |_______________ ___ ___________|_______ ____  _|_____ _________|
+    // |3|3|2|2|2|2|2|2|2|2|2|2|1|1|1|1|1|1|1|1|1|1|0|0|0|0|0|0|0|0|0|0|
+    // |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
+    // -----------------------------------------------------------------
+    required fixed32 date          = 1;
+
+    // Version: 10-bit major, 10-bit minor, 12-bit release
+    // -----------------------------------------------------------------
+    // | MAJOR REV         | MINOR REV         | RELEASE REV           |
+    // |_______________ ___|___________________|_______________________|
+    // |3|3|2|2|2|2|2|2|2|2|2|2|1|1|1|1|1|1|1|1|1|1|0|0|0|0|0|0|0|0|0|0|
+    // |1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|9|8|7|6|5|4|3|2|1|0|
+    // -----------------------------------------------------------------
+    required fixed32 version       = 2;
+
+    optional string  author        = 3;
+    optional string  organization  = 4;
+    optional string  company       = 5;
+
+    // This defines the version of the BDD itself
+    optional uint32  bddVersion    = 6 [default = 1];
+}
+
+
+// FYI - By default, optional numeric values are initialized with zero (0)
+
+message NodeDescriptor
+{
+    required uint32 vendor     = 1;
+    required uint32 product    = 2;
+    required uint32 version    = 3;
+}
+
+
+message CtrlRegs
+{
+    optional uint32 bcdnslots = 1;     // Slave only
+    optional uint32 ldnslots  = 2;     // Slave only
+    optional uint32 lupslots  = 3;     // Slave only
+    required uint32 dnslots   = 4;
+    required uint32 upslots   = 5;
+    required uint32 respcycs  = 6;
+    optional uint32 slotfmt   = 7;     // Master only
+
+    optional uint32 suscfg    = 8;     // Slave only
+    optional uint32 datctl    = 9;     // Master only
+
+    optional uint32 swctl     = 10;
+    optional uint32 control   = 11;
+
+    // NOT NEEDED:
+    //-------------
+    // discvry
+    // nodeadr
+    // bmmcfg
+}
+
+
+message IntRegs
+{
+    optional uint32 intmsk0  = 1;
+    optional uint32 intmsk1  = 2;
+    optional uint32 intmsk2  = 3;
+    optional uint32 becctl   = 4;
+
+    // NOT NEEDED:
+    //-------------
+    // intsrc  // Master only
+    // intstat
+    // inttype // Master only
+    // intpnd0
+    // intpnd1
+    // intpnd2 // Master only
+    // becnt
+    // raise
+    // generr
+    // linttype // Slave only
+}
+
+
+// NOT NEEDED:
+//-------------
+//message PrbsRegs
+//{
+//    optional uint32 testmode = 1;
+//    optional uint32 errcnt0  = 2;
+//    optional uint32 errcnt1  = 3;
+//    optional uint32 errcnt2  = 4;
+//    optional uint32 errcnt3  = 5;
+//    optional uint32 seed0    = 6;
+//    optional uint32 seed1    = 7;
+//    optional uint32 seed2    = 8;
+//    optional uint32 seed3    = 9;
+//}
+
+
+message TuningRegs
+{
+    optional uint32 vregctl = 1;
+    optional uint32 txactl  = 2;
+    optional uint32 rxactl  = 3;
+    optional uint32 txbctl  = 4;
+    optional uint32 rxbctl  = 5;
+}
+
+
+// NOT NEEDED:
+//-------------
+//message StatRegs
+//{
+//    optional uint32 swstat   = 1;
+//    optional uint32 node     = 2;
+//    optional uint32 transtat = 3;
+//    optional uint32 discstat = 4;      // Master only
+//    optional uint32 nscurcnt = 5;
+//}
+
+
+message I2cI2sRegs
+{
+    required uint32 i2ccfg      = 1;
+    optional uint32 pllctl      = 2;
+    required uint32 i2sgcfg     = 3;
+    required uint32 i2scfg      = 4;
+    optional uint32 i2srate     = 5;   // Slave only
+    optional uint32 i2stxoffset = 6;   // Master only
+    optional uint32 i2srxoffset = 7;   // Master only
+    optional uint32 syncoffset  = 8;   // Slave only
+    required uint32 pdmctl      = 9;
+    required uint32 errmgmt     = 10;
+
+    optional uint32 i2srrate    = 11;  // Master Only
+    optional uint32 i2srrctl    = 12;
+    optional uint32 i2srrsoffs  = 13;  // Slave Only
+    optional uint32 pdmctl2     = 14;
+
+    // NOT NEEDED:
+    //-------------
+    // chip // Slave only
+    // i2stest
+}
+
+
+message PinIoRegs
+{
+    optional uint32 clkcfg     = 1; // Slave Only
+    required uint32 gpiooen    = 3;
+    required uint32 gpioien    = 4;
+    required uint32 pinten     = 5;
+    required uint32 pintinv    = 6;
+    required uint32 pincfg     = 7;
+    required uint32 gpiodat    = 8;
+
+    optional uint32 clk1cfg    = 9;
+    optional uint32 clk2cfg    = 10;
+
+    // NOT NEEDED:
+    //-------------
+    // gpiodatset
+    // gpiodatclr
+    // gpioin
+}
+
+
+// NOT NEEDED:
+//-------------
+//message ShadowRegs
+//{
+//    optional uint32 respccc = 1;
+//    optional uint32 dctlcc  = 2;
+//    optional uint32 dnscc   = 3;
+//    optional uint32 ldnscc  = 4;
+//    optional uint32 upscc   = 5;
+//    optional uint32 lupscc  = 6;
+//    optional uint32 bcdnscc = 7;
+//    optional uint32 stmtcc  = 8;
+//}
+
+
+// NOT NEEDED:
+//-------------
+//message ChipTestRegs
+//{
+//    optional uint32 ptstmode = 1;
+//    optional uint32 strapval = 2;
+//}
+
+message DataSlotEnhancementRegs
+{
+    optional uint32     upmask0     = 1;   // Slave Only
+    optional uint32     upmask1     = 2;   // Slave Only
+    optional uint32     upmask2     = 3;   // Slave Only
+    optional uint32     upmask3     = 4;   // Slave Only
+    optional uint32     upoffset    = 5;   // Slave Only
+    optional uint32     dnmask0     = 6;   // Slave Only
+    optional uint32     dnmask1     = 7;   // Slave Only
+    optional uint32     dnmask2     = 8;   // Slave Only
+    optional uint32     dnmask3     = 9;   // Slave Only
+    optional uint32     dnoffset    = 10;  // Slave Only
+}
+
+message GpioDRegs
+{
+    optional uint32     gpioden     = 1;
+    optional uint32     gpiod0msk   = 2;
+    optional uint32     gpiod1msk   = 3;
+    optional uint32     gpiod2msk   = 4;
+    optional uint32     gpiod3msk   = 5;
+    optional uint32     gpiod4msk   = 6;
+    optional uint32     gpiod5msk   = 7;
+    optional uint32     gpiod6msk   = 8;
+    optional uint32     gpiod7msk   = 9;
+    optional uint32     gpioddat    = 10;
+    optional uint32     gpiodinv    = 11;
+}
+
+message MailboxRegs
+{
+    optional uint32     mbox0ctl    = 1;   // Slave Only
+    optional uint32     mbox1ctl    = 2;   // Slave Only
+
+    // NOT NEEDED:
+    //-------------
+    // mbox0stat // Slave Only
+    // mbox0b0   // Slave Only
+    // mbox0b1   // Slave Only
+    // mbox0b2   // Slave Only
+    // mbox0b3   // Slave Only
+    // mbox1stat // Slave Only
+    // mbox1b0   // Slave Only
+    // mbox1b1   // Slave Only
+    // mbox1b2   // Slave Only
+    // mbox1b3   // Slave Only
+}
+
+
+// NOT NEEDED:
+//-------------
+//message EFuseRegs
+//{
+//    optional uint32 efuseaddr = 1;
+//    optional uint32 efuserdat = 2;
+//    optional uint32 efusewdat = 3;
+//}
+
+enum NodeType
+{
+    NODE_TYPE_UNKNOWN = 0;
+    NODE_TYPE_MASTER  = 1;
+    NODE_TYPE_SLAVE   = 2;
+}
+
+//message AudioSlotInfo
+message Stream
+{
+    // This is the stream name with max chars of 16
+    required string        name                 = 1;
+
+    required uint32        sampleRate           = 2; // in bits
+    required uint32        sampleRateMultiplier = 3;
+
+    // Number of channels sent on this slot [1..32]
+    required uint32        numChans             = 4;
+}
+
+message Node
+{
+    required NodeType       nodeType            = 1;
+
+    // Node registers
+    required CtrlRegs       ctrlRegs            = 2;
+    optional IntRegs        intRegs             = 3;
+    optional TuningRegs     tuningRegs          = 4;
+    required I2cI2sRegs     i2cI2sRegs          = 5;
+    required PinIoRegs      pinIoRegs           = 6;
+
+    // These values are used (if the A2B node has an EPROM) to ensure that
+    // the discovered node matches what the designer intended to program. This
+    // information would be read from an EPROM attached to the A2B node and
+    // compared with what's contained here in the BDD.
+    required bool           ignEeprom           = 7;
+    required bool           verifyNodeDescr     = 8;
+    required NodeDescriptor nodeDescr           = 9;
+
+    // Node perspective of the up/downstream.  The up/downstream is
+    // a list of values that index into Network.streams.  The
+    // downstream is a view of streams coming into the node.  The
+    // upstream is a view of the streams that are generated on the
+    // upstream from the node.  The up/downstreamBcastCnt indicates
+    // how many streams at the front of the list are broadcast nodes.
+    required uint32         downstreamBcastCnt  = 10;
+    repeated uint32         downstream          = 11;
+    required uint32         upstreamBcastCnt    = 12;
+    repeated uint32         upstream            = 13;
+
+    optional DataSlotEnhancementRegs   slotEnh  = 14;
+    optional GpioDRegs                 gpioDist = 15;
+    optional MailboxRegs               mbox     = 16;
+
+    // NOT NEEDED:
+    //-------------
+    // prbsRegs
+    // statRegs
+    // shadowRegs
+    // chipTestRegs
+    // eFuseRegs
+}
+
+enum DiscoveryMode
+{
+    DISCOVERY_MODE_SIMPLE    = 0;
+    DISCOVERY_MODE_MODIFIED  = 1;
+    DISCOVERY_MODE_OPTIMIZED = 2;
+    DISCOVERY_MODE_ADVANCED  = 3;
+}
+
+enum ConfigMethod
+{
+    CONFIG_METHOD_AUTO   = 0;
+    CONFIG_METHOD_BDD    = 1;
+    CONFIG_METHOD_HYBRID = 2;
+}
+
+enum ConfigPriority
+{
+    CONFIG_PRIORITY_AUTO = 0;
+    CONFIG_PRIORITY_BDD  = 1;
+}
+
+enum ConfigErrPolicy
+{
+    CONFIG_ERR_POLICY_FATAL = 0;
+    CONFIG_ERR_POLICY_ERROR = 1;
+    CONFIG_ERR_POLICY_WARN  = 2;
+    CONFIG_ERR_POLCIY_NONE  = 3;
+}
+
+
+// Contains A2B network policy on how to react in certain configuration and
+// error scenarios.
+message NetworkPolicy
+{
+    required DiscoveryMode   discoveryMode = 1;
+    required ConfigMethod    cfgMethod     = 2;
+    required ConfigPriority  cfgPriority   = 3;
+    required ConfigErrPolicy cfgErrPolicy  = 4;
+}
+
+
+message Network
+{
+    required MetaData      metaData   = 1;
+    required uint32        masterAddr = 2; // I2C address of the master node
+    required NetworkPolicy policy     = 3;
+    repeated Node          nodes      = 4;
+    repeated Stream        streams    = 5;
+    required uint32        sampleRate = 6;
+}

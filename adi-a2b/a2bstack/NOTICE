@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = nanopb
+Source Component Name = nanopb
+Source Location = https://github.com/nanopb/nanopb/
+Source Version = nanopb-0.3.2
+Source Origin ID = github: nanopb/nanopb:nanopb-0.3.2
+Source Usage = Source Code
+Source License = Zlib
+Purpose = <EMPTY>

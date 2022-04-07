@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['spi_5fbatch_5fxfer',['spi_batch_xfer',['../spi__simple_8h.html#ac41e3a6192a4cd4a2c02d60a11959c2b',1,'spi_simple.h']]],
+  ['spi_5fclose',['spi_close',['../spi__simple_8h.html#a1781cd160aa0de8819689b2b06e16028',1,'spi_simple.h']]],
+  ['spi_5fclosedevice',['spi_closeDevice',['../spi__simple_8h.html#a00183be73b079c6d3178528aefdaf911',1,'spi_simple.h']]],
+  ['spi_5fdeinit',['spi_deinit',['../spi__simple_8h.html#afdb7992948e22529f066a30cfd8ded79',1,'spi_simple.h']]],
+  ['spi_5finit',['spi_init',['../spi__simple_8h.html#a03ce69048fd3017073f903ce2afb3042',1,'spi_simple.h']]],
+  ['spi_5fopen',['spi_open',['../spi__simple_8h.html#aa0a5f30aa495cd85c3a56c9b8fea7c5d',1,'spi_simple.h']]],
+  ['spi_5fopendevice',['spi_openDevice',['../spi__simple_8h.html#ab5239ff248f1387809a9cfbf69e8cb40',1,'spi_simple.h']]],
+  ['spi_5fsetclock',['spi_setClock',['../spi__simple_8h.html#a10cef6d693ddf3836e3e9e484dc4bead',1,'spi_simple.h']]],
+  ['spi_5fsetfastmode',['spi_setFastMode',['../spi__simple_8h.html#ae0c581ec9b01a7af41a6584fc08de28a',1,'spi_simple.h']]],
+  ['spi_5fsetlsbfirst',['spi_setLsbFirst',['../spi__simple_8h.html#a68e3cdf6d85151e4420b561ea722f067',1,'spi_simple.h']]],
+  ['spi_5fsetmode',['spi_setMode',['../spi__simple_8h.html#a44de835cff3a25aa1e1420570d301424',1,'spi_simple.h']]],
+  ['spi_5fsetslaveselect',['spi_setSlaveSelect',['../spi__simple_8h.html#a0e5e68b5d815d6eb885eaf28494d685f',1,'spi_simple.h']]],
+  ['spi_5fsetslaveselectcallback',['spi_setSlaveSelectCallback',['../spi__simple_8h.html#ab02d0aedf89e9665b1d82209e06d8b55',1,'spi_simple.h']]],
+  ['spi_5fsetwordsize',['spi_setWordSize',['../spi__simple_8h.html#aa521d3eb9a98e08583bcdd39eca7ad85',1,'spi_simple.h']]],
+  ['spi_5fstartonmosi',['spi_startOnMosi',['../spi__simple_8h.html#a0190abf147576593dc7b9517b3a70bd4',1,'spi_simple.h']]],
+  ['spi_5fxfer',['spi_xfer',['../spi__simple_8h.html#a419c90d85df23d1db21e4772f7aa1000',1,'spi_simple.h']]],
+  ['sport_5fbuffer_5fsize',['sport_buffer_size',['../sport__simple_8h.html#afaaf1f855f9560abea9e7ac8cc1f7762',1,'sport_simple.h']]],
+  ['sport_5fclose',['sport_close',['../sport__simple_8h.html#a91888743da58cbf0fa9ca5ac3384fe45',1,'sport_simple.h']]],
+  ['sport_5fconfigure',['sport_configure',['../sport__simple_8h.html#aa82246be31cec2d119495f7e29119790',1,'sport_simple.h']]],
+  ['sport_5fdeinit',['sport_deinit',['../sport__simple_8h.html#abf95639db39683fcaf6f097d21846235',1,'sport_simple.h']]],
+  ['sport_5finit',['sport_init',['../sport__simple_8h.html#a0c17f2ce40ae95fa6dbcea470fbf4472',1,'sport_simple.h']]],
+  ['sport_5fopen',['sport_open',['../sport__simple_8h.html#ab3230350ac8b78f696b3d5619d7f0479',1,'sport_simple.h']]],
+  ['sport_5fstart',['sport_start',['../sport__simple_8h.html#ab14725c370d0484b2ff199ef0481903c',1,'sport_simple.h']]],
+  ['sport_5fstop',['sport_stop',['../sport__simple_8h.html#a7ff9b576b16000781c223e67a95a6915',1,'sport_simple.h']]]
+];
