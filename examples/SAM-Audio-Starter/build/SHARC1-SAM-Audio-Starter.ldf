@@ -1,0 +1,1652 @@
+/*
+** ADSP-SC589 core 1 linker description file generated on Feb 14, 2018 at 08:45:33.
+*/
+/*
+** Copyright (C) 2000-2017 Analog Devices Inc., All Rights Reserved.
+**
+** This file is generated automatically based upon the options selected
+** in the System Configuration utility. Changes to the LDF configuration
+** should be made by modifying the appropriate options rather than editing
+** this file. To access the System Configuration utility, double-click the
+** system.svc file from a navigation view.
+**
+** Custom additions can be inserted within the user-modifiable sections,
+** these are bounded by comments that start with "$VDSG". Only changes
+** placed within these sections are preserved when this file is re-generated.
+**
+** Product      : CrossCore Embedded Studio
+** Tool Version : 6.1.0.0
+*/
+
+ARCHITECTURE(ADSP-SC589)
+
+/*
+** Define a linked library list. Libraries from the command line are included
+** in COMMAND_LINE_OBJECTS.
+*/
+$LIBRARIES =
+
+/*$VDSG<insert-user-libraries-at-beginning>                     */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-user-libraries-at-beginning>                     */
+
+    libcc.dlb
+   ,libc.dlb
+   ,libio.dlb
+   ,libcpp.dlb
+   ,libosal_noos.dlb
+   ,libprofile.dlb
+   ,libssl.dlb
+   ,libdrv.dlb
+   ,libdsp.dlb
+   ,libfftacc.dlb
+   ,libldr.dlb
+
+/*$VDSG<insert-user-libraries-at-end>                           */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-user-libraries-at-end>                           */
+
+   ;
+
+/*
+** Define a linked objects list.
+*/
+$OBJECTS =
+
+/*$VDSG<insert-user-objects-at-beginning>                       */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-user-objects-at-beginning>                       */
+
+   $COMMAND_LINE_OBJECTS
+
+/*$VDSG<insert-user-objects-at-end>                             */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-user-objects-at-end>                             */
+
+   ;
+
+/*
+** List of all objects and libraries.
+*/
+$OBJS_LIBS = $OBJECTS, $LIBRARIES;
+
+/*
+** List of objects and libraries which prefer internal memory as
+** specified by prefersMem attribute.
+*/
+$OBJS_LIBS_INTERNAL =
+
+/*$VDSG<insert-libraries-internal>                              */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-libraries-internal>                              */
+
+    $OBJS_LIBS{prefersMem("internal")}
+
+/*$VDSG<insert-libraries-internal-end>                          */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-libraries-internal-end>                          */
+
+   ;
+
+/*
+** List of objects and libraries which don't have a preference for
+** external memory as specified by prefersMem attribute.
+*/
+$OBJS_LIBS_NOT_EXTERNAL =
+
+/*$VDSG<insert-libraries-not-external>                          */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-libraries-not-external>                          */
+
+    $OBJS_LIBS{!prefersMem("external")}
+
+/*$VDSG<insert-libraries-not-external-end>                      */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-libraries-not-external-end>                      */
+
+   ;
+
+
+/*$VDSG<insert-user-macros>                                     */
+/* Text inserted between these $VDSG comments will be preserved */
+/*$VDSG<insert-user-macros>                                     */
+
+
+MEMORY
+{
+   // ADSP-SC589 MEMORY MAP.
+   // The ADSP-SC589 SHARC+ cores have 5 Mbit L1 RAM split over four blocks.
+
+   // This LDF defines memory sections only in byte format. It is no longer
+   // necessary to partition memory for different widths and different
+   // input types.
+
+   // The output sections that populate the memory are defined to use
+   // one of the following qualifiers:
+
+   //    BW     - byte sections
+   //    PM     - PM data/ISA code
+   //    DM     - DM data
+   //    SW     - VISA code
+   //    DATA64 - long word data
+
+   // The linker filters the inputs for each output section to match
+   // these output section qualfiers. Each output section uses the same
+   // byte memory sections which the linker packs correctly for each
+   // qualifier.
+   // Notes:
+   // 1) The interrupt Vector Table (IVT) code is placed in internal memory
+   //    by default and has to use ISA (NW, 48 bit) instructions.
+
+
+   // ----------------------- L1-Block 0 RAM (1.5 MBit) ------------------------
+   mem_iv_code             { TYPE(PM RAM) START(0x00090000) END(0x000900a7) WIDTH(48) }
+   mem_block0_bw           { TYPE(BW RAM) START(0x002403f0) END(0x0026ffff) WIDTH(8) }
+
+   // ----------------------- L1-Block 1 RAM (1.5 MBit) ------------------------
+   // The data cache attached to block 1 caches all the external memory access
+   // requests for the DM bus. The size of the cache can be adjusted with a
+   // corresponding reduction of the available non-cache L1 space.
+   // 16 KB at the end of block 1 is DM cache
+   mem_block1_bw           { TYPE(BW RAM) START(0x002c0000) END(0x002ebfff) WIDTH(8) }
+
+   // ----------------------- L1-Block 2 RAM (1 MBit) --------------------------
+   // The data cache attached to block 2 caches all the external memory access
+   // requests for the PM bus. If the size of the cache is 128KB, the whole
+   // of block 2 is cache.
+   // 16 KB at the end of block 2 is PM cache
+   mem_block2_bw           { TYPE(BW RAM) START(0x00300000) END(0x0031bfff) WIDTH(8) }
+
+   // ----------------------- L1-Block 3 RAM (1 MBit) --------------------------
+   // The instruction cache is attached to block 3.
+   // 16 KB at the end of block 3 is instruction cache
+   // MODIFIED SO WE CAN STORE LOADER STUB IN HERE
+   mem_block3_bw           { TYPE(BW RAM) START(0x00380000) END(0x0038ffff) WIDTH(8) }
+
+   // ----------------------- L2-RAM (2 MBit) -----------------------------------
+   // The 256 KB L2 memory has 8 banks partitions as follows:
+   //   bank1   2008_0000   2009_2FFF   4KB uncached - ICC
+   //                                   4KB uncached - MCAPI ARM
+   //                                   4KB uncached - MCAPI SHARC1
+   //                                  48KB uncached - MCAPI SHARC0
+   //                                  16KB uncached - ARM
+   //   bank2   2009_3000   2009_FFFF  52KB cached   - ARM
+   //   bank5   200A_0000   200A_7FFF  32KB cached   - SHARC1
+   //   bank6   200A_8000   200A_FFFF  32KB cached   - SHARC1
+   //   bank7   200B_0000   200B_7FFF  32KB cached   - SHARC0
+   //   bank8   200B_8000   200B_DFFB  24KB cached   - SHARC0
+   //           200B_DFFC   200B_FFFF   8KB cached boot code working area
+   //
+   // Notes:
+   // 1. The boot code claims the last 8KB+4B of L2 SRAM, as working space.
+   //    This memory is not bootable, but can be used by the application once
+   //    booting is complete (NO_INIT in CCES). Note that if the application
+   //    makes use of this space and then calls the Boot Code APIs, the
+   //    space may be corrupted. The odd extra 4B is required due to boot
+   //    rom issue ABK-211.
+   mem_L2B1P1_bw           { TYPE(BW RAM) START(0x20080000) END(0x20080fff) WIDTH(8) }
+   mem_L2B1P2_bw           { TYPE(BW RAM) START(0x20081000) END(0x20081fff) WIDTH(8) }
+   mem_L2B1P3_bw           { TYPE(BW RAM) START(0x20082000) END(0x20082fff) WIDTH(8) }
+   mem_L2B1P4_bw           { TYPE(BW RAM) START(0x20083000) END(0x2008efff) WIDTH(8) }
+   mem_L2B1P5_bw           { TYPE(BW RAM) START(0x2008F000) END(0x20092fff) WIDTH(8) }
+   mem_L2B2toB4_bw         { TYPE(BW RAM) START(0x20093000) END(0x2009ffff) WIDTH(8) }
+   mem_L2B5B6_bw           { TYPE(BW RAM) START(0x200a0000) END(0x200affff) WIDTH(8) }
+   mem_L2B7B8_bw           { TYPE(BW RAM) START(0x200b0000) END(0x200bdffb) WIDTH(8) }
+   mem_L2B8BC_bw           { TYPE(BW RAM) START(0x200bdffc) END(0x200bffff) WIDTH(8) }
+
+  #define MY_L2_CACHED_MEM   mem_L2B5B6_bw
+
+   // ----------------------- L3 ------------------------------------------------
+   // DMC0 and DMC1 DDR SDRAM memory is partitioned between all three cores
+   // and is setup for MCAPI.
+   //
+   // Notes
+   //  1. Code execution addresses are restricted for the SHARC cores so
+   //     the memory allocated cannot be increased or moved.
+   //  2. All L3 will be considered cached.
+   //  3. MY_SDRAM_DATA1_MEM is defined to be the smaller L3 data section and
+   //     MY_SDRAM_DATA2_MEM is the larger one.
+   //  4. Due to anomaly 20-00-0019 some memory in DDR-A and DDR-B cannot be
+   //     used for VISA code execution.
+
+   // ----------------------- 256MB DMC0(DDR-A) ---------------------------------
+   // 256MB DMC0 DDR SDRAM memory is partitioned as follows:
+   //   DDR-A bank1 : SHARC0 NW code, 6MB
+   //   DDR-A bank2 : SHARC0 data, 4MB
+   //   DDR-A bank3 : SHARC0 VISA code, 6MB (reduced for 20000019 workaround)
+   //   DDR-A bank4 : SHARC0 data, 128MB
+   //   DDR-A bank5 : SHARC1 data, 112MB
+   mem_DMC0_SDRAM_A1       { TYPE(BW RAM) START(0x80000000) END(0x805fffff) WIDTH(8) }
+   mem_DMC0_SDRAM_A2       { TYPE(BW RAM) START(0x80600000) END(0x809fffff) WIDTH(8) }
+   #if defined(__WORKAROUND_20000019)
+   mem_DMC0_SDRAM_A3       { TYPE(BW RAM) START(0x80a00000) END(0x80bfffff) WIDTH(8) }
+   #else
+   mem_DMC0_SDRAM_A3       { TYPE(BW RAM) START(0x80a00000) END(0x80ffffff) WIDTH(8) }
+   #endif
+   mem_DMC0_SDRAM_A4       { TYPE(BW RAM) START(0x81000000) END(0x88ffffff) WIDTH(8) }
+   mem_DMC0_SDRAM_A5       { TYPE(BW RAM) START(0x89000000) END(0x8fffffff) WIDTH(8) }
+
+   // ----------------------- 256MB DMC1(DDR-B) ---------------------------------
+   // 256MB DMC1 DDR SDRAM memory is partitioned as follows:
+   //   DDR-B bank1 : SHARC1 NW code, 6MB
+   //   DDR-B bank2 : SHARC1 data, 4MB
+   //   DDR-B bank3 : SHARC1 VISA code, 6MB (reduced for 20000019 workaround)
+   //   DDR-B bank4 : ARM, 240MB
+   mem_DMC1_SDRAM_B1       { TYPE(BW RAM) START(0xc0000000) END(0xc05fffff) WIDTH(8) }
+   mem_DMC1_SDRAM_B2       { TYPE(BW RAM) START(0xc0600000) END(0xc09fffff) WIDTH(8) }
+   #if defined(__WORKAROUND_20000019)
+   mem_DMC1_SDRAM_B3       { TYPE(BW RAM) START(0xc0A00000) END(0xc0bfffff) WIDTH(8) }
+   #else
+   mem_DMC1_SDRAM_B3       { TYPE(BW RAM) START(0xc0A00000) END(0xc0ffffff) WIDTH(8) }
+   #endif
+   mem_DMC1_SDRAM_B4       { TYPE(BW RAM) START(0xc1000000) END(0xcfffffff) WIDTH(8) }
+
+  #define MY_SDRAM_NWCODE_MEM mem_DMC0_SDRAM_A1
+  #define MY_SDRAM_DATA1_MEM  mem_DMC0_SDRAM_A2
+  #define MY_SDRAM_SWCODE_MEM mem_DMC0_SDRAM_A3
+  #define MY_SDRAM_DATA2_MEM  mem_DMC0_SDRAM_A4
+
+   /*$VDSG<insert-new-memory-segments>                          */
+   /* Text inserted between these $VDSG comments will be preserved */
+   /*$VDSG<insert-new-memory-segments>                          */
+
+} /* MEMORY */
+
+PROCESSOR SC589_CORE_1
+{
+   LINK_AGAINST( $COMMAND_LINE_LINK_AGAINST )
+   OUTPUT($COMMAND_LINE_OUTPUT_FILE)
+   KEEP(___ctor_NULL_marker)
+   KEEP(__ctor_NULL_marker.)
+   ENTRY(start)
+
+   /*$VDSG<insert-user-ldf-commands>                            */
+   /* Text inserted between these $VDSG comments will be preserved */
+   /*$VDSG<insert-user-ldf-commands>                            */
+
+   SECTIONS
+   {
+
+      /*$VDSG<insert-new-sections-at-iv_code>                   */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-iv_code>                   */
+
+
+    // ------------------------------------------------------------------
+    // Block 0 is primarily used for the interrupt vectors code, stack,
+    // heap and DM data.
+    // If the entire block3 is cache (128KB size) it also includes priority
+    // code section.
+    // Note: Only DMA accesses to block 0 (which has no cache) or to block 3
+    // (which has instruction cache) are valid because data caches conflict
+    // with DMA due to anomaly 20-00-0010.
+
+      /*$VDSG<insert-new-sections-for-l1_block0>                */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-l1_block0>                */
+
+      #define IV_CODE dxe_iv_code
+      IV_CODE PM
+      {
+
+         /*$VDSG<insert-new-sections-at-the-start-of-iv_code>   */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-start-of-iv_code>   */
+
+         // Interrupt vector code (4 NW instructions per interrupt)
+         INPUT_SECTIONS( $OBJECTS(iv_code) )
+
+         /*$VDSG<insert-new-sections-at-the-end-of-iv_code>     */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-end-of-iv_code>     */
+
+      } > mem_iv_code
+
+
+      /*$VDSG<insert-new-sections-at-mem_block0_bw>             */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-mem_block0_bw>             */
+
+      // Stack and heap initial memory reserve.
+      dxe_block0_stack_and_heap_reserve NO_INIT BW
+      {
+      } > mem_block0_bw
+
+      // Highest priority (prio0) data and code.
+      dxe_block0_data_prio0_bw BW
+      {
+         // Highest priority byte data for block0.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0 seg_int_data) )
+      } > mem_block0_bw
+
+      dxe_block0_data_prio0 DM
+      {
+         // Highest priority data for block 0.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0 seg_int_data ) )
+      } > mem_block0_bw
+
+      dxe_block0_sw_code_prio0 SW
+      {
+         // Highest priority SW code for block 0.
+         INPUT_SECTION_ALIGN(2)
+
+         /*$VDSG<insert-new-sections-at-the-start-of-dxe_block0_sw_code_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-start-of-dxe_block0_sw_code_prio0>  */
+
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0) )
+
+         /*$VDSG<insert-new-sections-at-the-end-of-dxe_block0_sw_code_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-end-of-dxe_block0_sw_code_prio0>  */
+
+      } > mem_block0_bw
+
+      dxe_block0_nw_code_prio0 PM
+      {
+         // Highest priority code for block 0.
+         INPUT_SECTION_ALIGN(2)
+
+         /*$VDSG<insert-new-sections-at-the-start-of-dxe_block0_nw_code_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-start-of-dxe_block0_nw_code_prio0>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0) )
+
+         /*$VDSG<insert-new-sections-at-the-end-of-dxe_block0_nw_code_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-new-sections-at-the-end-of-dxe_block0_nw_code_prio0>  */
+
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio0 NO_INIT DM
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0_noinit_data seg_int_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio0_bw NO_INIT BW
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0_noinit_data seg_int_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio0 ZERO_INIT DM
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0_bsz_data seg_int_bsz_data) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio0_bw ZERO_INIT BW
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block0_bsz_data seg_int_bsz_data) )
+      } > mem_block0_bw
+
+      // High priority (prio1) data, and code if necessary.
+      dxe_block0_data_prio1 DM
+      {
+         // High priority data.
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda_nw seg_dmda seg_vtbl) )
+      } > mem_block0_bw
+
+      dxe_block0_data_prio1_bw BW
+      {
+         // High priority byte data for block0.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda_bw seg_dmda seg_vtbl) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio1 ZERO_INIT DM
+      {
+         // High priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_bsz_data .bss32 .bss bsz) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio1_bw ZERO_INIT BW
+      {
+         // High priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_bsz_data .bss8 .bss) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio1 NO_INIT DM
+      {
+         // High priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio1_bw NO_INIT BW
+      {
+         // High priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_noinit_data) )
+      } > mem_block0_bw
+
+      // Next map data that's not thought to be low priority.
+      dxe_block0_data_prio2 DM
+      {
+         // Default priority data.
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda_nw seg_dmda seg_vtbl) )
+      } > mem_block0_bw
+
+      dxe_block0_data_prio2_bw BW
+      {
+         // Default priority data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda_bw seg_dmda seg_vtbl) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio2 ZERO_INIT DM
+      {
+         // Default priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_bsz_data .bss32 .bss bsz) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio2_bw ZERO_INIT BW
+      {
+         // Default priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_bsz_data .bss8 .bss) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio2 NO_INIT DM
+      {
+         // Default priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio2_bw NO_INIT BW
+      {
+         // Default priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_data_prio3 DM
+      {
+         // Unspecified and lowest priority data for any unused memory.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block0_bw
+
+      dxe_block0_data_prio3_bw BW
+      {
+         // Unspecified and lowest priority data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio3 ZERO_INIT DM
+      {
+         // Unspecified and lowest priority zero init data for any unused memory.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss32 .bss) )
+      } > mem_block0_bw
+
+      dxe_block0_bsz_prio3_bw ZERO_INIT BW
+      {
+         // Unspecified and lowest priority zero init data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss8 .bss) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio3 NO_INIT DM
+      {
+         //  Unspecified and lowest priority no init data for any unused memory.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+      } > mem_block0_bw
+
+      dxe_block0_noinit_prio3_bw NO_INIT BW
+      {
+         //  Unspecified and lowest priority no init data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+      } > mem_block0_bw
+
+
+    // ------------------------------------------------------------------
+    // Block 1 is primarily used for the DM data and DM cache.
+    // Note: Blocks 1 and 2 should not be used for DMA accesses when
+    // they are used as caches, reference anomaly 20-00-0010.
+
+    // Define a DM cache size symbol.
+    // The values used match the bits in the L1C0_CFG register size bits or
+    // -1 if cache is off.
+
+      ___ldf_dmcachesize = 0; // 16 KB DM cache
+
+      /*$VDSG<insert-new-sections-for-l1_block1>                */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-l1_block1>                */
+
+      dxe_block1_data_prio0_bw BW
+      {
+         // Highest priority byte data for block1.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1 seg_int_data) )
+      } > mem_block1_bw
+
+      dxe_block1_data_prio0 DM
+      {
+         // Highest priority data for block1.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio0>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1 seg_int_data) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio0>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio0>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_sw_code_prio0 SW
+      {
+         // Highest priority SW code for block1.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1) )
+      } > mem_block1_bw
+
+      dxe_block1_nw_code_prio0 PM
+      {
+         // Highest priority code for block1.
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio0 NO_INIT DM
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1_noinit_data seg_int_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio0_bw NO_INIT BW
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1_noinit_data seg_int_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio0 ZERO_INIT DM
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1_bsz_data seg_int_bsz_data) )
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio0_bw ZERO_INIT BW
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block1_bsz_data seg_int_bsz_data) )
+      } > mem_block1_bw
+
+      dxe_block1_data_prio1 DM
+      {
+         // High priority data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio1>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio1>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda_nw seg_dmda seg_vtbl) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio1>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio1>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_data_prio1_bw BW
+      {
+         // High priority byte data for block1.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_dmda_bw seg_dmda seg_vtbl) )
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio1 ZERO_INIT DM
+      {
+         // High priority zero initialized data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio1>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio1>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_bsz_data .bss32 .bss bsz) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio1>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio1>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio1_bw ZERO_INIT BW
+      {
+         // High priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_bsz_data .bss8 .bss) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio1 NO_INIT DM
+      {
+         // High priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio1_bw NO_INIT BW
+      {
+         // High priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_data_prio2 DM
+      {
+         // Default priority data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio2>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio2>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda_nw seg_dmda seg_vtbl) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio2>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio2>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_data_prio2_bw BW
+      {
+         // Default priority data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_dmda_bw seg_dmda seg_vtbl) )
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio2 ZERO_INIT DM
+      {
+         // Default priority zero initialized data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio2>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio2>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_bsz_data .bss32 .bss bsz) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio2>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio2>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio2_bw ZERO_INIT BW
+      {
+         // Default priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_bsz_data .bss8 .bss) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio2 NO_INIT DM
+      {
+         // Default priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio2_bw NO_INIT BW
+      {
+         // Default priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_data_prio3 DM
+      {
+         // Unspecified and lowest priority data for any unused memory.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio3>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_dm_data_prio3>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio3>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_dm_data_prio3>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_data_prio3_bw BW
+      {
+         // Unspecified and lowest priority data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio3 ZERO_INIT DM
+      {
+         // Unspecified and lowest priority zero init data for any unused memory.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio3>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_bsz_prio3>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss32 .bss) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio3>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_bsz_prio3>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_bsz_prio3_bw ZERO_INIT BW
+      {
+         // Unspecified and lowest priority zero init data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss8 .bss) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio3 NO_INIT DM
+      {
+         //  Unspecified and lowest priority no init data for any unused memory.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+      } > mem_block1_bw
+
+      dxe_block1_noinit_prio3_bw NO_INIT BW
+      {
+         //  Unspecified and lowest priority no init data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+      } > mem_block1_bw
+
+
+    // ------------------------------------------------------------------
+    // Block 2 is primarily used for the PM data and PM cache.
+    // Note blocks 1 and 2 should not be used for DMA accesses when
+    // they are used as caches, reference anomaly 20-00-0010.
+
+    // Define a PM cache size symbol.
+    // The values used match the bits in the L1C0_CFG register size bits or
+    // -1 if cache is off.
+
+      ___ldf_pmcachesize = 0; // 16 KB PM cache
+
+      /*$VDSG<insert-new-sections-for-l1_block2>                */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-l1_block2>                */
+
+      dxe_block2_data_prio0_bw BW
+      {
+         // Highest priority byte data for block2.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2) )
+      } > mem_block2_bw
+
+      dxe_block2_data_prio0 DM
+      {
+         // Highest priority data for block2.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2) )
+      } > mem_block2_bw
+
+      dxe_block2_sw_code_prio0 SW
+      {
+         // Highest priority SW code for block2.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2) )
+      } > mem_block2_bw
+
+      dxe_block2_nw_code_prio0 PM
+      {
+         // Highest priority code for block2.
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2) )
+      } > mem_block2_bw
+
+      dxe_block2_noinit_prio0 NO_INIT DM
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2_noinit_data) )
+      } > mem_block2_bw
+
+      dxe_block2_noinit_prio0_bw NO_INIT BW
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2_noinit_data) )
+      } > mem_block2_bw
+
+      dxe_block2_bsz_prio0 ZERO_INIT DM
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2_bsz_data) )
+      } > mem_block2_bw
+
+      dxe_block2_bsz_prio0_bw ZERO_INIT BW
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block2_bsz_data) )
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio1 PM 32
+      {
+         // High priority pm data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_pm_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_pm_data>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_pmda_nw seg_pmda) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_pm_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_pm_data>  */
+
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio1_bw BW
+      {
+         // High priority data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_pmda_bw seg_pmda) )
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio2 PM 32
+      {
+         // Default priority pm data.
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_pmda_nw seg_pmda) )
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio2_bw BW
+      {
+         // Default priority pm data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_pmda_bw seg_pmda) )
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio3 PM 32
+      {
+         // Unspecified and lowest priority pm data for any unused memory.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+      } > mem_block2_bw
+
+      dxe_block2_pm_data_prio3_bw BW
+      {
+         // Unspecified and lowest priority pm data for any unused memory.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda) )
+      } > mem_block2_bw
+
+
+    // ------------------------------------------------------------------
+    // Block 3 is primarily used for code and instruction cache.
+    // Only DMA accesses to block 0 (which has no cache) or to block 3
+    // (which has instruction cache) are valid because data caches conflict
+    // with DMA due to anomaly 20-00-0010.
+
+    // Define an instruction cache size symbol.
+    // The values used match the bits in the L1C0_CFG register size bits or
+    // -1 if cache is off.
+
+      ___ldf_icachesize = 0; // 16 KB instruction cache
+
+      /*$VDSG<insert-new-sections-for-l1_block3>                */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-l1_block3>                */
+
+      dxe_block3_data_prio0 DM
+      {
+         // Highest priority data for block3.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3) )
+      } > mem_block3_bw
+
+      dxe_block3_data_prio0_bw BW
+      {
+         // Highest priority byte data for block3.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3) )
+      } > mem_block3_bw
+
+      dxe_block3_noinit_prio0 NO_INIT DM
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3_noinit_data) )
+      } > mem_block3_bw
+
+      dxe_block3_noinit_prio0_bw NO_INIT BW
+      {
+         // Highest priority uninitialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3_noinit_data) )
+      } > mem_block3_bw
+
+      dxe_block3_bsz_prio0 ZERO_INIT DM
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3_bsz_data) )
+      } > mem_block3_bw
+
+      dxe_block3_bsz_prio0_bw ZERO_INIT BW
+      {
+         // Highest priority zero initialized data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3_bsz_data) )
+      } > mem_block3_bw
+
+      // Now use the remaining block 3 memory for code sections.
+      // Starting with inputs sections required to be in internal memory.
+      dxe_block3_sw_code_prio0 SW
+      {
+         // Highest priority SW code for block3.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3 seg_int_code_sw seg_int_code) )
+      } > mem_block3_bw
+
+      dxe_block3_nw_code_prio0 PM
+      {
+         // Highest priority code for block3.
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l1_block3 seg_int_code) )
+         // seg_init must be in L1
+         INPUT_SECTIONS( $OBJS_LIBS(seg_init) )
+      } > mem_block3_bw
+
+      // Try and use internal memory for the highest priority code.
+      // Inputs that are not prioritized can use L2 or L3.
+      dxe_block3_sw_code_prio1 SW
+      {
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_swco seg_pmco) )
+      } > mem_block3_bw
+
+      dxe_block3_nw_code_prio1 PM
+      {
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS_INTERNAL(seg_pmco) )
+      } > mem_block3_bw
+
+      dxe_block3_sw_code_prio2 SW
+      {
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_swco seg_pmco) )
+      } > mem_block3_bw
+
+      dxe_block3_nw_code_prio2 PM
+      {
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS_NOT_EXTERNAL(seg_pmco) )
+      } > mem_block3_bw
+
+      #define BLOCK3_SW_CODE dxe_block3_sw_code_prio3
+      BLOCK3_SW_CODE SW
+      {
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_swco seg_pmco) )
+      } > mem_block3_bw
+
+      #define BLOCK3_NW_CODE dxe_block3_nw_code_prio3
+      BLOCK3_NW_CODE PM
+      {
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmco) )
+      } > mem_block3_bw
+
+
+    // ------------------------------------------------------------------
+    // Input any unmapped data or code to fill up any unused L1 memory
+    // available in the blocks. However, we can't put code in blocks 1 and
+    // 2 when they are used as data caches.
+
+
+      /*$VDSG<insert-new-sections-at-mem_block2_overflow>       */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-mem_block2_overflow>       */
+
+      // try code in blocks 0-2
+      dxe_block0_sw_code SW
+      {
+         // VISA code.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_code_sw seg_int_code seg_swco seg_pmco) )
+      } > mem_block0_bw
+
+      dxe_block0_nw_code PM
+      {
+         // ISA code.
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_code) )
+         // seg_init must be in L1
+         INPUT_SECTIONS( $OBJS_LIBS(seg_init) )
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmco) )
+      } > mem_block0_bw
+
+
+    // next try non-PM data in block 2
+
+      dxe_block2_data DM
+      {
+         // general data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_overflow_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_overflow_data>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_data seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_overflow_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_overflow_data>  */
+
+      } > mem_block2_bw
+
+      dxe_block2_data_bw BW
+      {
+         // General data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_data seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block2_bw
+
+      dxe_block2_bsz ZERO_INIT DM
+      {
+         // Zero init data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_bsz>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block2_bsz>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_bsz_data seg_bsz_data .bss32 .bss) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_bsz>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block2_bsz>  */
+
+      } > mem_block2_bw
+
+      dxe_block2_bsz_bw ZERO_INIT BW
+      {
+         // Zero init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_bsz_data seg_bsz_data .bss8 .bss) )
+      } > mem_block2_bw
+
+      dxe_block2_noinit NO_INIT DM
+      {
+         // No-init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_noinit_data seg_noinit_data) )
+      } > mem_block2_bw
+
+      dxe_block2_noinit_bw NO_INIT BW
+      {
+         // No-init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_noinit_data seg_noinit_data) )
+      } > mem_block2_bw
+
+      // next try PM data in block 0 and block 1
+      dxe_block0_pm_data PM 32
+      {
+         // PM data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+      } > mem_block0_bw
+
+      dxe_block0_pm_data_bw BW
+      {
+         // PM data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_bw seg_pmda) )
+      } > mem_block0_bw
+
+      dxe_block1_pm_data PM 32
+      {
+         // PM data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_overflow_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_block1_overflow_data>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_overflow_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_block1_overflow_data>  */
+
+      } > mem_block1_bw
+
+      dxe_block1_pm_data_bw BW
+      {
+         // PM data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_bw seg_pmda) )
+      } > mem_block1_bw
+
+      // lastly try DM and PM data in block 3
+      dxe_block3_data DM
+      {
+         // General data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_data seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block3_bw
+
+      dxe_block3_data_bw BW
+      {
+         // General data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_data seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > mem_block3_bw
+
+      dxe_block3_pm_data PM 32
+      {
+         // PM data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+      } > mem_block3_bw
+
+      dxe_block3_pm_data_bw BW
+      {
+         // PM data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_bw seg_pmda) )
+      } > mem_block3_bw
+
+      dxe_block3_bsz ZERO_INIT DM
+      {
+         // Zero init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_bsz_data seg_bsz_data .bss32 .bss) )
+      } > mem_block3_bw
+
+      dxe_block3_bsz_bw ZERO_INIT BW
+      {
+         // Zero init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_bsz_data seg_bsz_data .bss8 .bss) )
+      } > mem_block3_bw
+
+      dxe_block3_noinit NO_INIT DM
+      {
+         // No-init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_noinit_data seg_noinit_data) )
+      } > mem_block3_bw
+
+      dxe_block3_noinit_bw NO_INIT BW
+      {
+         // No-init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_int_noinit_data seg_noinit_data) )
+      } > mem_block3_bw
+
+
+    // ------------------------------------------------------------------
+    // L2 - core memory
+
+
+      /*$VDSG<insert-new-sections-for-l2>                       */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-l2>                       */
+
+      // First do inputs for noinit data to the boot code working area memory.
+      dxe_l2bootcode_noinit NO_INIT DM
+      {
+         // L2 no init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_noinit_data seg_noinit_data) )
+      } > mem_L2B8BC_bw
+
+      dxe_l2bootcode_noinit_bw NO_INIT BW
+      {
+         // L2 no init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_noinit_data seg_noinit_data) )
+      } > mem_L2B8BC_bw
+
+      #if defined(MY_L2_CACHED_MEM)
+      dxe_l2_stack_and_heap_reserve NO_INIT BW
+      {
+         RESERVE(heaps_and_system_stack_in_L2, heaps_and_system_stack_in_L2_length = 32768, 8)
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_sw_code SW
+      {
+         // VISA code.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2 seg_l2_swco seg_swco seg_pmco) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_nw_code PM
+      {
+         // ISA code.
+         INPUT_SECTION_ALIGN(2)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2 seg_l2_pmco seg_pmco) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_data DM
+      {
+         // L2 data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2 seg_l2_dmda seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_data_bw BW
+      {
+         // L2 data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2 seg_l2_dmda_bw seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_bsz ZERO_INIT DM
+      {
+         // L2 zero init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_bsz_data seg_bsz_data .bss32 .bss) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_bsz_bw ZERO_INIT BW
+      {
+         // L2 zero init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_bsz_data seg_bsz_data .bss8 .bss) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_noinit NO_INIT DM
+      {
+         // L2 no init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_noinit_data seg_noinit_data) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_noinit_bw NO_INIT BW
+      {
+         // L2 no init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_l2_noinit_data seg_noinit_data) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_pm_data PM 32
+      {
+         // L2 pm data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+      } > MY_L2_CACHED_MEM
+
+      dxe_l2_pm_data_bw BW
+      {
+         // L2 pm data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_pmda) )
+      } > MY_L2_CACHED_MEM
+
+      #else
+      #warning L2 cached memory unused
+      #endif // MY_L2_CACHED_MEM
+
+    // ------------------------------------------------------------------
+    // L2 - uncached memory
+
+      // Memory at the very start of L2 is dedicated for MCAPI/ICC support.
+      // It is used to define a fixed size structure.
+      // The labels defined below are used in runtime support for MCAPI and caches.
+
+      ___MCAPI_common_start = MEMORY_START(mem_L2B1P1_bw);
+      ___MCAPI_common_end   = MEMORY_END  (mem_L2B1P1_bw);
+      ___MCAPI_arm_start    = MEMORY_START(mem_L2B1P2_bw);
+      ___MCAPI_arm_end      = MEMORY_END  (mem_L2B1P2_bw);
+      ___MCAPI_sharc0_start = MEMORY_START(mem_L2B1P4_bw);
+      ___MCAPI_sharc0_end   = MEMORY_END  (mem_L2B1P4_bw);
+      ___MCAPI_sharc1_start = MEMORY_START(mem_L2B1P3_bw);
+      ___MCAPI_sharc1_end   = MEMORY_END  (mem_L2B1P3_bw);
+      ___l2_start           = MEMORY_START(mem_L2B1P1_bw);
+      ___l2_end             = MEMORY_END  (mem_L2B8BC_bw);
+      ___l2_uncached_start  = MEMORY_START(mem_L2B1P1_bw);
+      ___l2_uncached_end    = MEMORY_END  (mem_L2B1P5_bw);
+      ___l2_cached_start    = MEMORY_START(mem_L2B2toB4_bw);
+      ___l2_cached_end      = MEMORY_END  (mem_L2B8BC_bw);
+
+    // ------------------------------------------------------------------
+    // SDRAM
+
+
+      /*$VDSG<insert-new-sections-for-sdram>                    */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-for-sdram>                    */
+
+
+      // The symbols defined below are used in runtime support for MCAPI and
+      // caches.
+      ___sdram_start        = MEMORY_START(mem_DMC0_SDRAM_A1);
+      ___sdram_end          = MEMORY_END  (mem_DMC1_SDRAM_B4);
+      ___sdram_arm_start    = MEMORY_START(mem_DMC1_SDRAM_B4);
+      ___sdram_arm_end      = MEMORY_END  (mem_DMC1_SDRAM_B4);
+
+      /*$VDSG<insert-new-sections-at-mem_sdram_code>            */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-mem_sdram_code>            */
+
+      #if defined(MY_SDRAM_SWCODE_MEM)
+      dxe_sdram_sw_code SW
+      {
+         // VISA code.
+         INPUT_SECTION_ALIGN(2)
+         FILL(0x1)  // fill gaps in memory with NOPs
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_sw_code>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_sw_code>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_code seg_swco seg_pmco) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_sw_code>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_sw_code>  */
+
+      } > MY_SDRAM_SWCODE_MEM
+
+      #endif // defined(MY_SDRAM_SWCODE_MEM)
+      dxe_sdram_nw_code PM
+      {
+         // ISA code.
+         INPUT_SECTION_ALIGN(2)
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_nw_code>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_nw_code>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_code seg_pmco) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_nw_code>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_nw_code>  */
+
+      } > MY_SDRAM_NWCODE_MEM
+
+
+      /*$VDSG<insert-new-sections-at-mem_sdram_dmda>            */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-mem_sdram_dmda>            */
+
+      dxe_sdram_cpp_ctors_nw DM
+      {
+         // C++ global constructors list for word-addressed code.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_cpp_ctors>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_cpp_ctors>  */
+
+         FORCE_CONTIGUITY
+         __ctors = .;    // __ctors points to the start of the section
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ctdm) )
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ctdml) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_cpp_ctors>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_cpp_ctors>  */
+
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_cpp_eh_gdt_nw DM
+      {
+         // C++ exceptions data table.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_cpp_eh_gdt>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_cpp_eh_gdt>  */
+
+         FORCE_CONTIGUITY
+         INPUT_SECTIONS( $OBJS_LIBS(.gdt32 .gdt) )
+         INPUT_SECTIONS( $OBJS_LIBS(.gdtl32 .gdtl) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_cpp_eh_gdt>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_cpp_eh_gdt>  */
+
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_cpp_eh_gdt_bw BW
+      {
+         // C++ exceptions data table.
+         INPUT_SECTION_ALIGN(4)
+         FORCE_CONTIGUITY
+         INPUT_SECTIONS( $OBJS_LIBS(.gdt) )
+         INPUT_SECTIONS( $OBJS_LIBS(.gdtl) )
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_cpp_ctors_bw BW
+      {
+         // C++ global constructors list for byte-addressed code.
+         INPUT_SECTION_ALIGN(4)
+         FORCE_CONTIGUITY
+         _ctors. = .;    // _ctors. points to the start of the section
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ctdm) )
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ctdml seg_ctdml_bw) )
+      } > MY_SDRAM_DATA1_MEM
+
+      #if defined(MY_SDRAM_DATA2_MEM)
+      dxe_sdram_stack_and_heap_reserve NO_INIT BW
+      {
+         RESERVE(heaps_and_system_stack_in_L3, heaps_and_system_stack_in_L3_length = 67108864, 8)
+      } > MY_SDRAM_DATA2_MEM
+
+      #else
+      dxe_sdram_stack_and_heap_reserve NO_INIT BW
+      {
+         RESERVE(heaps_and_system_stack_in_L3, heaps_and_system_stack_in_L3_length = 67108864, 8)
+      } > MY_SDRAM_DATA1_MEM
+
+      #endif // defined(MY_SDRAM_DATA2_MEM)
+      dxe_sdram_executable_name
+      {
+         INPUT_SECTION_ALIGN(4)
+         EXECUTABLE_NAME(_executable_name.)
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_data DM
+      {
+         // general data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_data>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_data seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_data>  */
+
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_data_bw BW
+      {
+         // general data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_data seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_bsz ZERO_INIT DM
+      {
+         // zero init data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_bsz>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_bsz>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_bsz_data seg_bsz_data .bss32 .bss) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_bsz>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_bsz>  */
+
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_bsz_bw ZERO_INIT BW
+      {
+         // zero init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_bsz_data seg_bsz_data .bss8 .bss) )
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_noinit NO_INIT DM
+      {
+         // no init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_noinit_data seg_noinit_data) )
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_noinit_bw NO_INIT BW
+      {
+         // no init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_noinit_data seg_noinit_data) )
+      } > MY_SDRAM_DATA1_MEM
+
+
+      /*$VDSG<insert-new-sections-at-mem_sdram_pmda>            */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-mem_sdram_pmda>            */
+
+      dxe_sdram_pm_data PM 32
+      {
+         // pm data.
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_pm_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_pm_data>  */
+
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ext_pmda seg_pmda_nw seg_pmda) )
+
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_pm_data>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-end-of-dxe_sdram_pm_data>  */
+
+      } > MY_SDRAM_DATA1_MEM
+
+      dxe_sdram_pm_data_bw BW
+      {
+         // pm data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ext_pmda seg_pmda) )
+      } > MY_SDRAM_DATA1_MEM
+
+      #if defined(MY_SDRAM_DATA2_MEM)
+      dxe_sdram_data2 DM
+      {
+         // general data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_data seg_dmda_nw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_data2_bw BW
+      {
+         // general data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram seg_ext_data seg_dmda_bw seg_dmda seg_vtbl .rtti .cht .edt) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_bsz2 ZERO_INIT DM
+      {
+         // zero init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_bsz_data seg_bsz_data .bss32 .bss) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_bsz2_bw ZERO_INIT BW
+      {
+         // zero init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_bsz_data seg_bsz_data .bss8 .bss) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_noinit2 NO_INIT DM
+      {
+         // no init data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_noinit_data seg_noinit_data) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_noinit2_bw NO_INIT BW
+      {
+         // no init data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_sdram_noinit_data seg_noinit_data) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_pm_data2 PM 32
+      {
+         // pm data.
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ext_pmda seg_pmda_nw seg_pmda) )
+      } > MY_SDRAM_DATA2_MEM
+
+      dxe_sdram_pm_data2_bw BW
+      {
+         // pm data.
+         INPUT_SECTION_ALIGN(4)
+         INPUT_SECTIONS( $OBJS_LIBS(seg_ext_pmda seg_pmda) )
+      } > MY_SDRAM_DATA2_MEM
+
+      #endif // defined MY_SDRAM_DATA2_MEM
+
+    // ------------------------------------------------------------------
+    // Complete the stack and heap definitions.
+
+
+      /*$VDSG<before-completing-the-stack-and-heap-definitions>  */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<before-completing-the-stack-and-heap-definitions>  */
+
+      dxe_block0_stack_and_heap_expand NO_INIT BW
+      {
+         INPUT_SECTION_ALIGN(4)
+      } > mem_block0_bw
+
+      dxe_l2_stack_and_heap_expand NO_INIT BW
+      {
+         INPUT_SECTION_ALIGN(4)
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_L2_stack_and_heap>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_L2_stack_and_heap>  */
+
+         RESERVE_EXPAND(heaps_and_system_stack_in_L2, heaps_and_system_stack_in_L2_length, 0, 8)
+         ldf_stack_space = heaps_and_system_stack_in_L2;
+         ldf_stack_end = (ldf_stack_space + (heaps_and_system_stack_in_L2_length - 8));
+         ldf_stack_length = ldf_stack_end - ldf_stack_space;
+      } > MY_L2_CACHED_MEM
+
+      #if defined(MY_SDRAM_DATA2_MEM)
+      dxe_sdram_stack_and_heap_expand NO_INIT BW
+      {
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_stack_and_heap>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_stack_and_heap>  */
+
+         RESERVE_EXPAND(heaps_and_system_stack_in_L3, heaps_and_system_stack_in_L3_length, 0, 8)
+         ldf_heap_space = heaps_and_system_stack_in_L3;
+         ldf_heap_end = (ldf_heap_space + (heaps_and_system_stack_in_L3_length - 8));
+         ldf_heap_length = ldf_heap_end - ldf_heap_space;
+      } > MY_SDRAM_DATA2_MEM
+
+      #else
+      dxe_sdram_stack_and_heap_expand NO_INIT BW
+      {
+
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_stack_and_heap>  */
+         /* Text inserted between these $VDSG comments will be preserved */
+         /*$VDSG<insert-input-sections-at-the-start-of-dxe_sdram_stack_and_heap>  */
+
+         RESERVE_EXPAND(heaps_and_system_stack_in_L3, heaps_and_system_stack_in_L3_length, 0, 8)
+         ldf_heap_space = heaps_and_system_stack_in_L3;
+         ldf_heap_end = (ldf_heap_space + (heaps_and_system_stack_in_L3_length - 8));
+         ldf_heap_length = ldf_heap_end - ldf_heap_space;
+      } > MY_SDRAM_DATA1_MEM
+
+      #endif // defined(MY_SDRAM_DATA2_MEM)
+
+    // ------------------------------------------------------------------
+
+
+      /*$VDSG<insert-new-sections-at-the-end>                   */
+      /* Text inserted between these $VDSG comments will be preserved */
+      /*$VDSG<insert-new-sections-at-the-end>                   */
+
+   } /* SECTIONS */
+} /* SC589_CORE_1 */
+

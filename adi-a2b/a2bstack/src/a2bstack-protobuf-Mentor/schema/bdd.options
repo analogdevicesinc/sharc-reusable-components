@@ -1,0 +1,34 @@
+//=============================================================================
+//
+// Project: a2bdriver
+//
+// Copyright (c) 2015 - Analog Devices Inc. All Rights Reserved.
+// This software is proprietary & confidential to Analog Devices, Inc.
+// and its licensors. See LICENSE for complete details.
+//
+//=============================================================================
+//
+// \file:   bdd.options
+// \author: Mentor Graphics, Embedded Software Division
+// \brief:  The protobufs options of the BDD as defined by the A2B
+//          driver software stack to limit sizes so they are not variable.
+//
+//=============================================================================
+
+bdd.MetaData.author         max_size:64
+bdd.MetaData.organization   max_size:64
+bdd.MetaData.company        max_size:64
+
+bdd.Network.nodes           max_count:10
+bdd.Network.streams         max_count:64
+
+bdd.Node.downstream         max_count:32
+bdd.Node.upstream           max_count:32
+
+bdd.Stream.name             max_size:16
+
+bdd.NodeType                long_names:false
+bdd.DiscoveryMode           long_names:false
+bdd.ConfigMethod            long_names:false
+bdd.ConfigPriority          long_names:false
+bdd.ConfigErrPolicy         long_names:false

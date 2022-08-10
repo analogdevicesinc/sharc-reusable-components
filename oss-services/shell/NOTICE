@@ -1,0 +1,21 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = shell
+Source Component Name = elua's elua
+Source Location = https://github.com/elua/elua/
+Source Version = v0.9
+Source Origin ID = github: elua/elua:v0.9
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>
+
+Function Name = linenoise
+Source Component Name = linenoise
+Source Location = https://github.com/antirez/linenoise
+Source Version = 1.0
+Source Origin ID = github: antirez/linenoise:1.0
+Source Usage = Source Code
+Source License = BSD-2-Clause
+Purpose = <EMPTY>

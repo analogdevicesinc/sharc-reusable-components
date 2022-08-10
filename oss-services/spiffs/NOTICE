@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = spiffs
+Source Component Name = SPIFFS (SPI Flash File System)
+Source Location = https://github.com/pellepl/spiffs
+Source Version = 0.3.7
+Source Origin ID = 0.3.7
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>

@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = circuits.UART
+Source Component Name = circuits_UART
+Source Location = https://github.com/elixir-circuits/circuits_uart
+Source Version = 1.4.3
+Source Origin ID = hex: circuits_uart/1.4.3
+Source Usage = Source Code
+Source License = Apache 2.0
+Purpose = <EMPTY>

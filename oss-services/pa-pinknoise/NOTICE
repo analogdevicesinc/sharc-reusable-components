@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = pa-pinknoise
+Source Component Name = PortAudio (Portaudio/portaudio)
+Source Location = http://www.portaudio.com/ (https://github.com/PortAudio/portaudio/)
+Source Version = v19.7.0
+Source Origin ID = v19.7.0
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>

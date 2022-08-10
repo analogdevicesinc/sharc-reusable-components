@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = lwIP - A Lightweight TCP/IP stack
+Source Component Name = lwIP
+Source Location = https://github.com/lwip-tcpip/lwip (http://git.savannah.gnu.org/cgit/lwip.git)
+Source Version = STABLE-2_1_2_RELEASE
+Source Origin ID = github: lwip-tcpip/lwip:STABLE-2_1_2_RELEASE
+Source Usage = Source Code
+Source License = BSD-3-Clause
+Purpose = <EMPTY>

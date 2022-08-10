@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = romfs
+Source Component Name = elua's elua
+Source Location = https://github.com/elua/elua/
+Source Version = v0.9
+Source Origin ID = github: elua/elua:v0.9
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>
