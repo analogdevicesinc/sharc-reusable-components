@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = FreeRTOS
+Source Component Name = FreeRTOS Real Time Kernel
+Source Location = https://github.com/FreeRTOS/FreeRTOS-Kernel
+Source Version = V10.4.6
+Source Origin ID = github: FreeRTOS/FreeRTOS:V10.4.6
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>

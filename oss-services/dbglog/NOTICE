@@ -1,0 +1,12 @@
+*-------------------------*
+*  OSS Traceability Info  *
+*-------------------------*
+
+Function Name = dbglog
+Source Component Name = umm_malloc - Memory manager for Small(ish) Microprocessors
+Source Location = https://github.com/rhempel/umm_malloc
+Source Version = v1.0.1
+Source Origin ID = <EMPTY>
+Source Usage = Source Code
+Source License = MIT
+Purpose = <EMPTY>

@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['sae_5fcore_5fidx_5f0_77',['SAE_CORE_IDX_0',['../sae_8h.html#ab7049539673e5e361de167881cf20103ae3bf7e45dd17e7d49abee6cdbab7aedb',1,'sae.h']]],
+  ['sae_5fcore_5fidx_5f1_78',['SAE_CORE_IDX_1',['../sae_8h.html#ab7049539673e5e361de167881cf20103a58c109b851302728d2e7521f0ad0717f',1,'sae.h']]],
+  ['sae_5fcore_5fidx_5f2_79',['SAE_CORE_IDX_2',['../sae_8h.html#ab7049539673e5e361de167881cf20103a9c88729215470afda0e512fa874a63c7',1,'sae.h']]],
+  ['sae_5fcore_5fidx_5fnone_80',['SAE_CORE_IDX_NONE',['../sae_8h.html#ab7049539673e5e361de167881cf20103ad7ca8a0f6899940a66f08a172de5d30e',1,'sae.h']]],
+  ['sae_5fevent_5fadd_5fstream_81',['SAE_EVENT_ADD_STREAM',['../sae_8h.html#a58edf0cc4b5de1b9e569335b6c2cef7ea929150133b201cdccc397c62748244e2',1,'sae.h']]],
+  ['sae_5fevent_5fnone_82',['SAE_EVENT_NONE',['../sae_8h.html#a58edf0cc4b5de1b9e569335b6c2cef7ea31d2ad775c01a9210d9e0736c6ba9f0b',1,'sae.h']]],
+  ['sae_5fevent_5fremove_5fstream_83',['SAE_EVENT_REMOVE_STREAM',['../sae_8h.html#a58edf0cc4b5de1b9e569335b6c2cef7eaffc692030f26067138ae22b95426e3a5',1,'sae.h']]],
+  ['sae_5fresult_5fbad_5fstream_84',['SAE_RESULT_BAD_STREAM',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfaae14150db8680435c3f50d278c533069',1,'sae.h']]],
+  ['sae_5fresult_5fbad_5fstream_5fname_85',['SAE_RESULT_BAD_STREAM_NAME',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa027eabccbf12a8527eb6080abd42f72f',1,'sae.h']]],
+  ['sae_5fresult_5fcore_5fnot_5fready_86',['SAE_RESULT_CORE_NOT_READY',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa7bdfc299321f76072f150d8444a10dfc',1,'sae.h']]],
+  ['sae_5fresult_5fcorrupt_5fheap_87',['SAE_RESULT_CORRUPT_HEAP',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfae067c7e4a7c62bd4bbe6ef1bd55dd4d8',1,'sae.h']]],
+  ['sae_5fresult_5ferror_88',['SAE_RESULT_ERROR',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa924c0b28a9343cb23525a26563ef33c8',1,'sae.h']]],
+  ['sae_5fresult_5fno_5fmem_89',['SAE_RESULT_NO_MEM',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa91faf0455cfe7ff1fc8305268b371806',1,'sae.h']]],
+  ['sae_5fresult_5fok_90',['SAE_RESULT_OK',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa76bc038839c2e9b02fb1b225a19d148f',1,'sae.h']]],
+  ['sae_5fresult_5fqueue_5fempty_91',['SAE_RESULT_QUEUE_EMPTY',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfae74cda9ca2834657398c757503cb6a19',1,'sae.h']]],
+  ['sae_5fresult_5fqueue_5ffull_92',['SAE_RESULT_QUEUE_FULL',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa8f33a6493ab198a28fc3387998505856',1,'sae.h']]],
+  ['sae_5fresult_5freference_5ferror_93',['SAE_RESULT_REFERENCE_ERROR',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfa751198e39164f176d9364a25f39624a3',1,'sae.h']]],
+  ['sae_5fresult_5fstream_5fexists_94',['SAE_RESULT_STREAM_EXISTS',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfaa35b8cf56175a0cc68c7398f16992b53',1,'sae.h']]],
+  ['sae_5fresult_5funknown_95',['SAE_RESULT_UNKNOWN',['../sae_8h.html#a21055c75960ecd187051bed57d8b6fbfaf559b7832fd77d29f261b5f379de1133',1,'sae.h']]]
+];
