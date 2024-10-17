@@ -11,6 +11,7 @@
  * ------------------------------------------------------------------------------
  *
  * Copyright (c) 2011-2016 Analog Devices, Inc.
+ * Copyright (c) 2024      Ioannis Konstantelias
  *
  * All rights reserved.
  *
@@ -397,9 +398,9 @@ static ADI_ETHER_RESULT ptp_apply_time_offset (
 
 	if (uAdd == 2)
 	{
-		pDev->pEMAC_REGS->EMAC_TM_HISEC    = pDev->PTPDevice.nInitTime.HSecond;
-		pDev->pEMAC_REGS->EMAC_TM_SECUPDT  = pDev->PTPDevice.nInitTime.LSecond;
-		pDev->pEMAC_REGS->EMAC_TM_NSECUPDT = pDev->PTPDevice.nInitTime.NanoSecond;
+		pDev->pEMAC_REGS->EMAC_TM_HISEC    = pTime->HSecond;
+		pDev->pEMAC_REGS->EMAC_TM_SECUPDT  = pTime->LSecond;
+		pDev->pEMAC_REGS->EMAC_TM_NSECUPDT = pTime->NanoSecond;
 		pDev->pEMAC_REGS->EMAC_TM_CTL |= ENUM_EMAC_TM_CTL_EN_TS_INIT;
 		while ((pDev->pEMAC_REGS->EMAC_TM_CTL & BITM_EMAC_TM_CTL_TSINIT) != 0u) {}
 		return ADI_ETHER_RESULT_SUCCESS;
